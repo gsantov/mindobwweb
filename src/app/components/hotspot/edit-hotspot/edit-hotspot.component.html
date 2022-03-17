@@ -1,0 +1,162 @@
+<div class="section-content">
+
+	<div class="section-title-container">
+		<div class="section-title">
+			{{sectionTitle}} {{languageService.content.SUB_HOTSPOT}}
+		</div>
+	</div>
+
+	<form (ngSubmit)="saveToDb(hotspotForm)" #hotspotForm="ngForm">
+		<div class="form-row" style="margin-bottom: 15px;">
+			<!-- Ubicacion -->
+			<div class="col-md-4">
+				<label for="hlatitud" class="col-form-label">{{languageService.content.LATITUDE}}: *</label>
+				<input [disabled]="!isNew" type="number" required class="form-control" name="hlatitud" #hlatitud="ngModel" [(ngModel)]="hotspotService.currentHotspot.location.latitude">
+				<div [hidden]="hlatitud.valid || !submit" class="alert alert-danger">
+						{{languageService.content.LATITUDE}} {{languageService.content.REQUIRED}}
+				</div>
+			</div>
+			<div class="col-md-4">
+				<label for="hlongitud" class="col-form-label">{{languageService.content.LONGITUDE}}: *</label>
+				<input [disabled]="!isNew" type="number" required class="form-control" name="hlongitud" #hlongitud="ngModel" [(ngModel)]="hotspotService.currentHotspot.location.longitude">
+				<div [hidden]="hlongitud.valid || !submit" class="alert alert-danger">
+						{{languageService.content.LONGITUDE}} {{languageService.content.REQUIRED}}
+				</div>
+			</div>
+
+			<div class="col-md-4">
+				<label for="longitud" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.IMAGE_IN_MENU}}: *</label>
+				<div class="upload-container">
+					<button type="button" id="preview-image-btn" class="btn btn-primary preview-image-btn" (click)="previewImage()" data-toggle="modal" data-target="#previewModal">
+						<i class="icon ion-md-search"></i>
+					</button>
+					<div id="custom-file-inline-container" class="custom-file">
+						<input required type="file" class="custom-file-input" id="inputGroupFile01" accept=".jpg" aria-describedby="inputGroupFileAddon01"
+						 (change)="onUpload($event)">
+						<label class="custom-file-label" for="inputGroupFile01">{{imageName}}</label>
+					</div>
+				</div>
+				<div [hidden]="fileLoaded || !submit" class="alert alert-danger">
+					{{languageService.content.IMAGE_IN_MENU}} {{languageService.content.REQUIRED}}
+				</div>
+			</div>
+		</div>
+		<!-- activeIds="{{['static-1', 'static-2']}}" -->
+		<ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+			<!-- Espanol -->
+			<ngb-panel id="static-1">
+				<ng-template ngbPanelHeader>
+					<div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-1')">
+						{{languageService.content.INFO_IN_SPANISH}}
+					</div>
+				</ng-template>
+				<ng-template ngbPanelContent>
+					<div class="form-row">
+						<div class="col-md-6">
+							<label for="hnombre" class="col-form-label">{{languageService.content.ES_NAME_LABEL}}: *</label>
+							<input required type="text" class="form-control" name="hnombre" #hnombre="ngModel" [(ngModel)]="hotspotService.currentHotspot.esInfo.title">
+							<div [hidden]="hnombre.valid || !submit" class="alert alert-danger">
+									{{languageService.content.ES_NAME_LABEL}} {{languageService.content.REQUIRED}}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label for="hdescripcioncorta" class="col-form-label">{{languageService.content.ES_SHORT_DESCRPTION}}: *</label>
+							<input required #hdescripcioncorta="ngModel" type="text" class="form-control" name="hdescripcioncorta" [(ngModel)]="hotspotService.currentHotspot.esInfo.subtitle">
+							<div [hidden]="hdescripcioncorta.valid || !submit" class="alert alert-danger">
+									{{languageService.content.ES_SHORT_DESCRPTION}} {{languageService.content.REQUIRED}}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hdescripcion" class="col-form-label">{{languageService.content.ES_LONG_DESCRPTION}}: *</label>
+						<textarea required #hdescripcion rows="3" cols="50" type="text" class="form-control" name="hdescripcion" [(ngModel)]="hotspotService.currentHotspot.esInfo.description"></textarea>
+						<div [hidden]="hdescripcion.valid || !submit" class="alert alert-danger">
+								{{languageService.content.ES_LONG_DESCRPTION}} {{languageService.content.REQUIRED}}
+						</div>
+					</div>
+				</ng-template>
+			</ngb-panel>
+			<!-- Ingles -->
+			<ngb-panel id="static-2">
+				<ng-template ngbPanelHeader>
+					<div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-2')">
+						{{languageService.content.INFO_IN_ENGLISH}}
+					</div>
+				</ng-template>
+				<ng-template ngbPanelContent>
+					<div class="form-row">
+						<div class="col-md-6">
+							<label for="hnombrei" class="col-form-label">{{languageService.content.EN_NAME_LABEL}}: *</label>
+							<input required #hnombrei="ngModel" type="text" class="form-control" name="hnombrei" [(ngModel)]="hotspotService.currentHotspot.enInfo.title">
+							<div [hidden]="hnombrei.valid || !submit" class="alert alert-danger">
+									{{languageService.content.EN_NAME_LABEL}} {{languageService.content.REQUIRED}}
+							</div>
+						</div>
+						<div class="col-md-6">
+							<label for="hdescripcioncortai" class="col-form-label">{{languageService.content.EN_SHORT_DESCRPTION}}: *</label>
+							<input required #hdescripcioncortai="ngModel" type="text" class="form-control" name="hdescripcioncortai" [(ngModel)]="hotspotService.currentHotspot.enInfo.subtitle">
+							<div [hidden]="hdescripcioncortai.valid || !submit" class="alert alert-danger">
+									{{languageService.content.EN_SHORT_DESCRPTION}} {{languageService.content.REQUIRED}}
+							</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="hdescripcioni" class="col-form-label">{{languageService.content.EN_LONG_DESCRPTION}}: *</label>
+						<textarea required #hdescripcioni="ngModel" rows="3" cols="50" type="text" class="form-control" name="hdescripcioni" [(ngModel)]="hotspotService.currentHotspot.enInfo.description"></textarea>
+						<div [hidden]="hdescripcioni.valid || !submit" class="alert alert-danger">
+								{{languageService.content.EN_LONG_DESCRPTION}} {{languageService.content.REQUIRED}}
+						</div>
+					</div>
+				</ng-template>
+			</ngb-panel>
+			<!-- Birds disponibles -->
+			<ngb-panel id="static-3">
+				<ng-template ngbPanelHeader>
+					<div class="d-flex align-items-center justify-content-between">
+						<div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-3')">
+								{{languageService.content.AVAILABLE_BIRDS}}
+						</div>
+						<div>
+							<button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modalBook" (click)='clearSearch()'>
+								<i class="icon ion-md-add"></i>
+								{{languageService.content.ADD_LABEL}}
+							</button>
+						</div>
+					</div>
+				</ng-template>
+				<ng-template ngbPanelContent>
+					<table class="table table-striped">
+						<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">{{languageService.content.FAMILY_LABEL}}</th>
+								<th scope="col">{{languageService.content.NAME_LABEL}}</th>
+								<th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr *ngFor="let bird of hotspotService.currentBirdCol; index as i">
+								<th scope="row">{{ i + 1 }}</th>
+								<td>{{ bird.familyName }}</td>
+								<td>{{languageService.getInfoByLanguage(bird, "name")}}</td>
+								<td class="acciones-buttons">
+									<a (click)="deleteBird(bird.id, i)" title="{{languageService.content.REMOVE}}">
+										<i class="icon ion-md-trash text-danger"></i>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</ng-template>
+			</ngb-panel>
+		</ngb-accordion>
+		<!-- GUARDAR -->
+		<button class="btn btn-sm btn-success save-button" type="submit">
+				{{languageService.content.SAVE}}
+		</button>
+		<!-- ATRAS -->
+		<button class="btn btn-sm btn-danger save-button" (click)="goBack()">
+				{{languageService.content.BACK}}
+		</button>
+	</form>
+</div>

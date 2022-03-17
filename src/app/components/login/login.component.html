@@ -1,0 +1,50 @@
+<section id="login" class="mb-5 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-4 mx-auto">
+                <div class="card_login">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <form #formLogin="ngForm" (ngSubmit)="onLogin(formLogin)">
+                                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                                <div class="form-group">
+                                    <input [(ngModel)]="email" type="email" id="email" name="email" class="form-control" placeholder="Email *" required #useremail="ngModel"
+                                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$">
+                                    <!-- <div [hidden]="email || !submit"> -->
+                                    <div [hidden]="useremail.valid || !submit" class="alert alert-danger">
+                                        <div *ngIf="useremail.valid || useremail.errors.pattern">
+                                            Email Incorrecto
+                                        </div>
+                                        <div *ngIf="useremail.valid || useremail.errors.required">
+                                            Email requerido
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- </div> -->
+                                <div class="form-group">
+                                    <input [(ngModel)]="password" type="password" id="password" name="password" class="form-control" placeholder="Contraseña *"
+                                        required #userpass="ngModel">
+                                    <div [hidden]="userpass.valid || !submit" class="alert alert-danger">
+                                        Contraseña {{languageService.content.REQUIRED}}
+                                    </div>
+                                </div>
+
+
+                                <div>
+                                    Idioma/Language:
+                                </div>
+                                <div class="btn-group btn-group-toggle language-selection" ngbRadioGroup name="radioBasic" [(ngModel)]="language" *ngFor="let lang of languageService.availableLanguages; index as i">
+                                    <label ngbButtonLabel class="btn-primary" style="cursor: pointer;border-radius:0px;">
+                                        <input ngbButton type="radio" [value]="lang.acronym"> {{lang.name}}
+                                    </label>
+                                </div>
+
+                                <button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

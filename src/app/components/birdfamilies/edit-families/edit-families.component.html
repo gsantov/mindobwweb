@@ -1,0 +1,90 @@
+<div class="section-content">
+
+    <div class="section-title-container">
+        <div class="section-title">
+            {{sectionTitle}} familia
+        </div>
+
+    </div>
+
+    <form (ngSubmit)="saveToDb(familiesForm)" #familiesForm="ngForm">
+        <div class="form-row" style="margin-bottom: 15px;">
+            <!-- Ubicacion -->
+            <div class="col-md-6">
+                <label for="fnombrecientifico" class="col-form-label">{{languageService.content.SCIENTIFIC_NAME}}: *</label>
+                <input [disabled]="!isNew" required #fnombrecientifico="ngModel" type="text" class="form-control" name="fnombrecientifico" [(ngModel)]="familiesService.currentFamily.scientificName">
+                <div [hidden]="fnombrecientifico.valid || !submit" class="alert alert-danger">
+                        {{languageService.content.SCIENTIFIC_NAME}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="longitud" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.IMAGE_IN_MENU}}: *</label>
+                <div class="upload-container">
+                    <button type="button" id="preview-image-btn" class="btn btn-primary preview-image-btn" (click)="previewImage()" data-toggle="modal" data-target="#previewModal">
+                        <i class="icon ion-md-search"></i>
+                    </button>
+                    <div id="custom-file-inline-container" class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".jpg" aria-describedby="inputGroupFileAddon01"
+                            (change)="onUpload($event)">
+                        <label class="custom-file-label" for="inputGroupFile01">{{imageName}}</label>
+                    </div>
+                </div>
+                <div [hidden]="fileLoaded || !submit" class="alert alert-danger">
+                    {{languageService.content.IMAGE_IN_MENU}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+        </div>
+
+        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+            <!-- Espanol -->
+            <ngb-panel id="static-1">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-1')">
+                        {{languageService.content.INFO_IN_SPANISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-group">
+                        <label for="fnombre" class="col-form-label">{{languageService.content.ES_NAME_LABEL}}: *</label>
+                        <input required #fnombre="ngModel" type="text" class="form-control" name="fnombre" [(ngModel)]="familiesService.currentFamily.esInfo.name">
+                        <div [hidden]="fnombre.valid || !submit" class="alert alert-danger">
+                                {{languageService.content.ES_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- Ingles -->
+            <ngb-panel id="static-2">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-2')">
+                        {{languageService.content.INFO_IN_ENGLISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-group">
+                        <label for="fnombrei" class="col-form-label">{{languageService.content.EN_NAME_LABEL}}: *</label>
+                        <input required #fnombrei="ngModel" type="text" class="form-control" name="fnombrei" [(ngModel)]="familiesService.currentFamily.enInfo.name">
+                        <div [hidden]="fnombrei.valid || !submit" class="alert alert-danger">
+                                {{languageService.content.EN_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <!-- GUARDAR -->
+        <button class="btn btn-sm btn-success save-button">
+                {{languageService.content.SAVE}}
+        </button>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger save-button" (click)="goBack()">
+                {{languageService.content.BACK}}
+        </button>
+    </form>
+</div>
+
+<ng-template #imagePreviewModal let-modal>
+    <div class="modal-body preview-media-container" style="width: 100%;">
+        <img class="preview-media" src="{{previewImg}}">
+    </div>
+</ng-template>

@@ -1,0 +1,25 @@
+.texto{
+    text-align: center;
+    margin: auto;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+.home-option-button{
+    margin: 15px;
+    padding: 10px !important;
+    width: 200px;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+    background: #1976D2;
+    color: white;
+}
+
+.home-container{
+    width: 100%;
+}
+
+.home-button-container{
+    width: 100%;
+    text-align: center;
+}

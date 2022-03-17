@@ -1,0 +1,151 @@
+/* You can add global styles to this file, and also import other style files */
+.header-container{
+    /* display: inline-block; */
+    width: 100%;
+    position: fixed;
+    z-index: 1000;
+}
+
+.sidebar-container{
+    display: inline-block;
+    margin-top: 54px;
+    /* position: fixed; */
+}
+
+.content-container{
+    margin-top: 54px;
+    display: inline-block;
+    width: 100%;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+    position: fixed;
+}
+
+.section-title{
+    display: inline-block;
+    padding: 10px 0px;
+    font-weight: bold;
+    font-size: 19px;
+}
+
+.section-title-container {
+    border-bottom: 1px solid #1976D2;
+}
+
+/* PARA FLOATING BUTTON */
+.floating-button {
+    padding-top: 4px;
+    bottom: 50px;
+    right: 40px;
+    position: absolute;
+    height: 55px;
+    width: 55px;
+    border-radius: 50%;
+    background-color: #28a745!important;
+    text-align: center;
+    cursor: pointer;
+    z-index: 1000;
+
+    -webkit-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.41);
+    -moz-box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.41);
+    box-shadow: 1px 1px 5px 0px rgba(0,0,0,0.41);
+}
+
+.floating-button i {
+    color: white;
+    font-size: 30px;
+}
+
+.section-content{
+    padding: 15px;
+    height: calc(100vh - 54px);
+    overflow-y: auto;
+}
+
+a{
+    cursor: pointer;
+    color: #007bff;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.acciones-col {
+    text-align: center;
+}
+
+.acciones-buttons {
+    text-align: center;
+    font-size: 25px;
+    padding: 3px;
+    color: #007bff;
+}
+
+.color-error { color: red; }
+.color-success { color: #51a351; }
+
+.save-button{
+    margin: 15px;
+    padding: 10px !important;
+    float: right;
+    width: 130px;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+}
+
+.acciones-buttons a {
+    margin: 0px 15px;
+}
+
+.header-button {
+    float: right;
+    width: 130px;
+    font-size: 17px !important;
+    font-weight: 500 !important;
+}
+
+.wrap-label{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.upload-container{
+    width: 100%;
+}
+
+.upload-container button {
+    width: 38px;
+}
+
+.preview-image-btn{
+    margin-right: 5px;
+    display: none;
+}
+
+.custom-file{
+    vertical-align: bottom;
+}
+
+.custom-file-input {
+    cursor: pointer;
+}
+
+.custom-file-label{
+    cursor: pointer;
+}
+
+.language-selection {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+ng2-loading-spinner .center{
+    transform: none !important;
+    width: auto !important;
+}

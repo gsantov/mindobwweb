@@ -1,0 +1,71 @@
+<nav id="sidebar" *ngIf="isLogged">
+    <ul class="list-unstyled components">
+        <!-- <p>Dummy Heading</p> -->
+        <!-- <li class="active">
+              <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Home</a>
+              <ul class="collapse list-unstyled" id="homeSubmenu">
+                  <li>
+                      <a href="#">Home 1</a>
+                  </li>
+                  <li>
+                      <a href="#">Home 2</a>
+                  </li>
+                  <li>
+                      <a href="#">Home 3</a>
+                  </li>
+              </ul>
+          </li> -->
+        <li id="homeOpt">
+            <a routerLink="/home">{{languageService.content.HOME}}</a>
+        </li>
+        <li id="hotspotOpt">
+            <a routerLink="/hostpots">{{languageService.content.HOTSPOT}}</a>
+        </li>
+        <li id="trailsOpt">
+            <a routerLink="/routes">{{languageService.content.RUTAS}}</a>
+        </li>
+        <li id="familiesOpt">
+            <a routerLink="/birdFamilies">{{languageService.content.FAMILIAS}}</a>
+        </li>
+
+        <li id="birdsOpt">
+            <a routerLink="/birdFamilies/birds/all">{{languageService.content.BIRDS}}</a>
+        </li>
+        <li style="height: 15px;">
+
+        </li>
+        <li>
+            <a data-toggle="modal" (click)="notificarCambio(confirmModal)">{{languageService.content.NOTIFY_VERSION_CHANGE}}</a>
+        </li>
+
+        <li style="height: 15px;">
+
+        </li>
+        <li>
+            <a href="#languageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">{{languageService.content.LANGUAGE}}</a>
+            <ul class="collapse list-unstyled" id="languageSubmenu" *ngFor="let lang of languageService.availableLanguages; index as i">
+                <li>
+                    <a (click)="languageService.changeLanguage(lang.acronym)">{{lang.acronym}}</a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</nav>
+
+<ng-template #confirmModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{languageService.content.NOTIFY_VERSION_CHANGE}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{languageService.content.Q_NOTIFY_VERSION_CHANGE}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="modal.close('Save')">{{languageService.content.CONFIRM}}</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.close('Cancel')">{{languageService.content.CANCEL}}</button>
+    </div>
+</ng-template>
+
+<!-- </div> -->

@@ -1,0 +1,170 @@
+<div class="section-content">
+
+    <div class="section-title-container">
+        <div class="section-title">
+            {{sectionTitle}} especie
+        </div>
+
+    </div>
+
+    <!-- <ng-template #rt let-r="result" let-t="term">
+        <ngb-highlight [result]="r.scientificName" [term]="t"></ngb-highlight>
+    </ng-template> -->
+
+    <form (ngSubmit)="saveToDb(birdForm)" #birdForm="ngForm">
+        <div class="form-group">
+            <label for="bfamilyid" class="col-form-label">{{languageService.content.FAMILY_SCIENTIFIC_NAME_LABEL}}: *</label>
+            <input [disabled]="disableFamilyInput" required id="typeahead-format" type="text" class="form-control" [(ngModel)]="currentFamily"
+                [ngbTypeahead]="search" [resultFormatter]="formatter" name="bfamilyid" #bfamilyid="ngModel" [inputFormatter]="formatter"
+                (change)="verifySelectedFamily()" />
+            <div [hidden]="bfamilyid.valid || !submit || currentFamilyValid" class="alert alert-danger">
+                {{languageService.content.FAMILY_SCIENTIFIC_NAME_LABEL}} {{languageService.content.REQUIRED}}
+            </div>
+            <div [hidden]="!bfamilyid.valid || currentFamilyValid" class="alert alert-danger">
+                {{languageService.content.FAMILY_SCIENTIFIC_NAME_LABEL}} {{languageService.content.INVALID_A}}
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px;">
+            <div class="col-md-6">
+                <label for="bnombrecientifico" class="col-form-label">{{languageService.content.SCIENTIFIC_NAME}}: *</label>
+                <input [disabled]="!isNew" required #bnombrecientifico="ngModel" type="text" class="form-control" name="bnombrecientifico" [(ngModel)]="familiesService.currentBird.esInfo.scientificName"
+                    (change)="changeScientificName()">
+                <div [hidden]="bnombrecientifico.valid || !submit" class="alert alert-danger">
+                    {{languageService.content.SCIENTIFIC_NAME}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="imagen" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.IMAGE_IN_MENU}}: *</label>
+                <div class="upload-container">
+                    <button id="preview-image-btn" class="btn btn-primary preview-image-btn" (click)="previewImage()" data-toggle="modal" type="button"
+                        data-target="#previewModal">
+                        <i class="icon ion-md-search"></i>
+                    </button>
+                    <div id="custom-file-inline-container" class="custom-file">
+                        <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".jpg" aria-describedby="inputGroupFileAddon01"
+                            (change)="onUpload($event)">
+                        <label class="custom-file-label" for="inputGroupFile01">{{imageName}}</label>
+                    </div>
+                </div>
+                <div [hidden]="fileLoaded || !submit" class="alert alert-danger">
+                    {{languageService.content.IMAGE_IN_MENU}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+
+        </div>
+        <!-- EN PELIGRO -->
+        <div class="form-group">
+            <label>{{languageService.content.IN_DANGER}}:
+                <input type="checkbox" name="danger" [(ngModel)]="familiesService.currentBird.inDanger" (change)="changeDanger()">
+            </label>
+        </div>
+
+        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+            <!-- Espanol -->
+            <ngb-panel id="static-1">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-1')">
+                        {{languageService.content.INFO_IN_SPANISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label for="bnombre" class="col-form-label">{{languageService.content.ES_NAME_LABEL}}: *</label>
+                            <input required #bnombre="ngModel" type="text" class="form-control" name="bnombre" [(ngModel)]="familiesService.currentBird.esInfo.name">
+                            <div [hidden]="bnombre.valid || !submit" class="alert alert-danger">
+                                {{languageService.content.ES_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="btiempo" class="col-form-label">{{languageService.content.ES_LIFETIME}}:</label>
+                            <input type="text" class="form-control" name="btiempo" [(ngModel)]="familiesService.currentBird.esInfo.lifetime">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="bspeed" class="col-form-label">{{languageService.content.ES_SPEED}}:</label>
+                            <input type="text" class="form-control" name="bspeed" [(ngModel)]="familiesService.currentBird.esInfo.speed">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="bweight" class="col-form-label">{{languageService.content.ES_WEIGHT}}:</label>
+                            <input type="text" class="form-control" name="bweight" [(ngModel)]="familiesService.currentBird.esInfo.weight">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="bsize" class="col-form-label">{{languageService.content.ES_SIZE}}:</label>
+                            <input type="text" class="form-control" name="bsize" [(ngModel)]="familiesService.currentBird.esInfo.size">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="binfo" class="col-form-label">{{languageService.content.ES_BIRD_INFO}}: *</label>
+                        <textarea required #binfo="ngModel" rows="5" cols="50" type="text" class="form-control" name="binfo" [(ngModel)]="familiesService.currentBird.esInfo.info"></textarea>
+                        <div [hidden]="binfo.valid || !submit" class="alert alert-danger">
+                            {{languageService.content.ES_BIRD_INFO}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="familiesService.currentBird.inDanger">
+                        <label for="bdangerinfo" class="col-form-label">{{languageService.content.ES_DANGER_INFO}}:</label>
+                        <textarea rows="5" cols="50" type="text" class="form-control" name="bdangerinfo" [(ngModel)]="familiesService.currentBird.esInfo.dangerInfo"></textarea>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- Ingles -->
+            <ngb-panel id="static-2">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-2')">
+                        {{languageService.content.INFO_IN_ENGLISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-row">
+                        <div class="col-md-4">
+                            <label for="bnombrei" class="col-form-label">{{languageService.content.EN_NAME_LABEL}}: *</label>
+                            <input required #bnombrei="ngModel" type="text" class="form-control" name="bnombrei" [(ngModel)]="familiesService.currentBird.enInfo.name">
+                            <div [hidden]="bnombrei.valid || !submit" class="alert alert-danger">
+                                {{languageService.content.EN_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="btiempoi" class="col-form-label">{{languageService.content.EN_LIFETIME}}:</label>
+                            <input type="text" class="form-control" name="btiempoi" [(ngModel)]="familiesService.currentBird.enInfo.lifetime">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="bspeedi" class="col-form-label">{{languageService.content.EN_SPEED}}:</label>
+                            <input type="text" class="form-control" name="bspeedi" [(ngModel)]="familiesService.currentBird.enInfo.speed">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col-md-6">
+                            <label for="bweighti" class="col-form-label">{{languageService.content.EN_WEIGHT}}:</label>
+                            <input type="text" class="form-control" name="bweighti" [(ngModel)]="familiesService.currentBird.enInfo.weight">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="bsizei" class="col-form-label">{{languageService.content.EN_SIZE}}:</label>
+                            <input type="text" class="form-control" name="bsizei" [(ngModel)]="familiesService.currentBird.enInfo.size">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="binfoi" class="col-form-label">{{languageService.content.EN_BIRD_INFO}}: *</label>
+                        <textarea required #binfoi="ngModel" rows="5" cols="50" type="text" class="form-control" name="binfoi" [(ngModel)]="familiesService.currentBird.enInfo.info"></textarea>
+                        <div [hidden]="binfoi.valid || !submit" class="alert alert-danger">
+                            {{languageService.content.EN_BIRD_INFO}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="familiesService.currentBird.inDanger">
+                        <label for="bdangerinfoi" class="col-form-label">{{languageService.content.EN_DANGER_INFO}}:</label>
+                        <textarea rows="5" cols="50" type="text" class="form-control" name="bdangerinfoi" [(ngModel)]="familiesService.currentBird.enInfo.dangerInfo"></textarea>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <!-- GUARDAR -->
+        <button class="btn btn-sm btn-success save-button">
+            {{languageService.content.SAVE}}
+        </button>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger save-button" (click)="goBack()">
+            {{languageService.content.BACK}}
+        </button>
+    </form>
+</div>

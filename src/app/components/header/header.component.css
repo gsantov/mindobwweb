@@ -1,0 +1,45 @@
+.header{
+    height: 54px;
+    background: #1976D2;
+    color: white;
+}
+
+.header button{
+    display: inline-block;
+}
+
+.section-name{
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    width: 80%;
+}
+
+.logout-btn{
+    z-index: 1000;
+    float: right;
+    cursor: pointer;
+    font-size: 30px;
+    margin-right: 20px;
+}
+
+.toggler-btn{
+    z-index: 1000;
+    display: inline-block;
+    cursor: pointer;
+    font-size: 30px;
+    margin-left: 20px;
+}
+
+.title-container{
+    margin: auto;
+    top: 10px;
+    width: fit-content;
+    left: 0px;
+    right: 0px;
+    display: inline-block;
+    text-align: center;
+    font-size: 22px;
+    position: absolute;
+    font-weight: bold;
+}

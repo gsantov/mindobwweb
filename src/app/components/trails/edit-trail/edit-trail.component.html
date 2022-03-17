@@ -1,0 +1,147 @@
+<div class="section-content">
+
+    <div class="section-title-container">
+        <div class="section-title">
+            {{sectionTitle}} ruta
+        </div>
+
+    </div>
+
+    <form (ngSubmit)="saveToDb(trailForm)" #trailForm="ngForm">
+
+        <div class="form-group">
+            <label for="longitud" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.IMAGE_IN_MENU}}: *</label>
+            <div class="upload-container">
+                <button type="button" id="preview-image-btn" class="btn btn-primary preview-image-btn" (click)="previewImage()" data-toggle="modal"
+                    data-target="#previewModal">
+                    <i class="icon ion-md-search"></i>
+                </button>
+                <div id="custom-file-inline-container" class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".png, .jpg" aria-describedby="inputGroupFileAddon01"
+                        (change)="onUpload($event)">
+                    <label class="custom-file-label" for="inputGroupFile01">{{imageName}}</label>
+                </div>
+            </div>
+            <div [hidden]="fileLoaded || !submit" class="alert alert-danger">
+                {{languageService.content.IMAGE_IN_MENU}} {{languageService.content.REQUIRED}}
+            </div>
+        </div>
+        <div class="form-row" style="margin-bottom: 15px;">
+            <div class="col-md-6">
+                <label for="tdistance" class="col-form-label">{{languageService.content.DISTANCE}}: *</label>
+                <input type="number" required class="form-control" name="tdistance" #tdistance="ngModel" [(ngModel)]="trailService.currentRoute.distance">
+                <div [hidden]="tdistance.valid || !submit" class="alert alert-danger">
+                    {{languageService.content.DISTANCE}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="tdistanceNotation" class="col-form-label">{{languageService.content.DISTANCE_NOTATION}}: *</label>
+
+                <!-- <select class="form-control" required [(ngModel)]="model.power" name="power" #power="ngModel">
+                    <option *ngFor="let pow of powers" [value]="pow">{{pow}}</option>
+                </select> -->
+
+                <select required #tdistanceNotation="ngModel" name="tdistanceNotation" [(ngModel)]="trailService.currentRoute.distanceNotation"
+                    class="form-control">
+                    <option value="Mts">{{languageService.content.METERS}}</option>
+                    <option value="Kms">{{languageService.content.KILOMETERS}}</option>
+                </select>
+                <div [hidden]="tdistanceNotation.valid || !submit" class="alert alert-danger">
+                    {{languageService.content.DISTANCE_NOTATION}}
+                </div>
+            </div>
+        </div>
+
+        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" [destroyOnHide]="false">
+            <!-- Espanol -->
+            <ngb-panel id="static-1">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-1')">
+                        {{languageService.content.INFO_IN_SPANISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-group">
+                        <label for="tnombre" class="col-form-label">{{languageService.content.ES_NAME_LABEL}}: *</label>
+                        <input required #tnombre="ngModel" type="text" class="form-control" name="tnombre" [(ngModel)]="trailService.currentRoute.esInfo.name">
+                        <div [hidden]="tnombre.valid || !submit" class="alert alert-danger">
+                            {{languageService.content.ES_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tdescripcion" class="col-form-label">{{languageService.content.ES_ROUTE_DESCRIPTION}}:</label>
+                        <textarea #tdescripcion rows="3" cols="50" type="text" class="form-control" name="tdescripcion" [(ngModel)]="trailService.currentRoute.esInfo.description"></textarea>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- Ingles -->
+            <ngb-panel id="static-2">
+                <ng-template ngbPanelHeader>
+                    <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-2')">
+                        {{languageService.content.INFO_IN_ENGLISH}}
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <div class="form-group">
+                        <label for="tnombrei" class="col-form-label">{{languageService.content.EN_NAME_LABEL}}: *</label>
+                        <input required #tnombrei="ngModel" type="text" class="form-control" name="tnombrei" [(ngModel)]="trailService.currentRoute.enInfo.name">
+                        <div [hidden]="tnombrei.valid || !submit" class="alert alert-danger">
+                            {{languageService.content.EN_NAME_LABEL}} {{languageService.content.REQUIRED}}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="tdescripcioni" class="col-form-label">{{languageService.content.EN_ROUTE_DESCRIPTION}}:</label>
+                        <textarea #tdescripcioni="ngModel" rows="3" cols="50" type="text" class="form-control" name="tdescripcioni" [(ngModel)]="trailService.currentRoute.enInfo.description"></textarea>
+                    </div>
+                </ng-template>
+            </ngb-panel>
+            <!-- Hotspots disponibles -->
+            <ngb-panel id="static-3">
+                <ng-template ngbPanelHeader>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div class="btn btn-link cursor-pointer" (click)="acc.toggle('static-3')">
+                            {{languageService.content.HOTSPOT}}
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#addHotspotModal" (click)='clearSearch()'>
+                                <i class="icon ion-md-add"></i>
+                                {{languageService.content.ADD_LABEL}}
+                            </button>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">{{languageService.content.NAME_LABEL}}</th>
+                                <th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let hostpot of trailService.currentHotspotCol; index as i">
+                                <th scope="row">{{ i + 1 }}</th>
+                                <td>{{languageService.getInfoByLanguage(hostpot, "title")}}</td>
+                                <td class="acciones-buttons">
+                                    <a (click)="deleteHotspot(hostpot.id, i)" title="{{languageService.content.REMOVE}}">
+                                        <i class="icon ion-md-trash text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
+        <!-- GUARDAR -->
+        <button class="btn btn-sm btn-success save-button">
+            {{languageService.content.SAVE}}
+        </button>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger save-button" (click)="goBack()">
+            {{languageService.content.BACK}}
+        </button>
+    </form>
+</div>

@@ -1,0 +1,50 @@
+<div class="modal fade" id="addHotspotModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">{{languageService.content.ADD_LABEL}}</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+          </div>
+          <div class="modal-body">
+              <form>
+                  <div class="form-group form-inline">
+                      <div class="table-search-label">
+                            {{languageService.content.SEARCH}}:
+                      </div>
+                      <input class="form-control table-search-input" type="text" [formControl]="trailService.filter" />
+                  </div>
+              </form>
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">{{languageService.content.NAME_LABEL}}</th>
+                          <th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr *ngFor="let hotspot of trailService.filteredHotspots | async; index as i">
+                          <th scope="row">{{ i + 1 }}</th>
+                          <td>
+                              <ngb-highlight [result]="languageService.getInfoByLanguage(hotspot, 'title')" [term]="trailService.filter.value"></ngb-highlight>
+                          </td>
+                          <td class="acciones-buttons">
+                              <a *ngIf="!isAvailable(hotspot.id)" (click)="add(hotspot)" title="{{languageService.content.ADD_LABEL}}">
+                                  <i class="icon ion-md-add"></i>
+                              </a>
+                              <a *ngIf="isAvailable(hotspot.id)" (click)="remove(hotspot)" title="{{languageService.content.REMOVE}}">
+                                  <i class="icon ion-md-trash text-danger"></i>
+                              </a>
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-primary" #btnClose data-dismiss="modal">{{languageService.content.CLOSE}}</button>
+          </div>
+      </div>
+  </div>
+</div>

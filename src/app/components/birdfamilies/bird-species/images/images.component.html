@@ -1,0 +1,88 @@
+<div class="section-content">
+    <div class="section-title-container">
+        <div class="section-title">
+                {{languageService.content.IMAGES_OF}}: {{languageService.getInfoByLanguage(familiesService.currentBird, "name")}}
+        </div>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger header-button" (click)="goBack()">
+                {{languageService.content.BACK}}
+        </button>
+    </div>
+    <div id="gallery-container" class="gallery-container">
+        <div class="galitem col-md-6 col-lg-4" *ngFor="let image of imageCol; index as i">
+            <div class="thumbnail-container col-md-12">
+                <div class="thumbnail-view col-md-12" data-toggle="modal" (click)="previewImage(image, content)">
+                    <div class="thumbnail-view-icon">
+                        <i class="icon ion-md-search"></i>
+                    </div>
+                </div>
+                <img class="thumbnail-img" src="{{image.thumbnailUrl}}">
+            </div>
+            <div class="delete-multimedia bg-danger col-md-12" (click)="deleteImage(image, i)">
+                <i class="icon ion-md-trash text-danger"></i> {{languageService.content.DELETE}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="floating-button" title="{{languageService.content.ADD_LABEL}}" (click)="addNewImage(uploadImageModal)">
+    <i class="icon ion-md-add"></i>
+</div>
+
+<div class="uploading-progress-container " id="uploading-vid-progress">
+    <div class="uploading-header col-lg-6 col-md-6" (click)="cerrarProgress();">
+            {{languageService.content.CLOSE}}
+    </div>
+    <div class="uploading-progress col-lg-6 col-md-6" style="display: inline-block;">
+        <div class="label-container" *ngFor="let percent of uploadPercent; index as i">
+            <div class="uploading-progress-value">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" [attr.aria-valuenow]="progress" aria-valuemin="0"
+                    aria-valuemax="100" style="min-width: 2em;" [style.width]="(percent.uploadPercent | async)+ '%'">
+                    {{percent.fileName}} - {{percent.uploadPercent | async | number : '1.0-0'}}%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UPLOAD IMAGE -->
+<ng-template #uploadImageModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{languageService.content.UPLOAD_IMAGE}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form #galleryLoadImageForm="ngForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="imagen" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.IMAGE}}: *</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".jpg" aria-describedby="inputGroupFileAddon01"
+                        (change)="onUpload($event)">
+                    <label class="custom-file-label wrap-label" for="inputGroupFile01">{{imageName}}</label>
+                </div>
+                <div [hidden]="fileLoaded" class="alert alert-danger">
+                        {{languageService.content.IMAGE}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="biauthor" class="col-form-label">{{languageService.content.FLIE_CREDITS}}: *</label>
+                <input required #biauthor="ngModel" type="text" class="form-control" name="biauthor" [(ngModel)]="authorInfo">
+                <div [hidden]="biauthor.valid" class="alert alert-danger">
+                        {{languageService.content.FLIE_CREDITS}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="modal.close('Save')" [disabled]="!galleryLoadImageForm.form.valid">{{languageService.content.UPLOAD_IMAGE}}</button>
+            <button type="button" class="btn btn-dark" (click)="modal.close('Cancel')">{{languageService.content.CANCEL}}</button>
+        </div>
+    </form>
+</ng-template>
+
+<ng-template #content let-modal>
+    <div class="modal-body preview-media-container" style="width: 100%;">
+        <img class="preview-media" src="{{familiesService.previewUrl}}">
+    </div>
+</ng-template>

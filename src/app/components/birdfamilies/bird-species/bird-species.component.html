@@ -1,0 +1,88 @@
+<div class="section-content">
+    <div class="section-title-container">
+        <div class="section-title" *ngIf="!all">
+            {{languageService.content.SPECIES_FROM_FAMILY}}: {{languageService.getInfoByLanguage(familiesService.currentFamily, "name")}}
+        </div>
+        <div class="section-title" *ngIf="all">
+            {{languageService.content.BIRDS}}
+        </div>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger header-button" (click)="goBack()">
+            {{languageService.content.BACK}}
+        </button>
+    </div>
+
+    <form>
+        <div class="form-group form-inline">
+            <div class="table-search-label">
+                {{languageService.content.SEARCH}}:
+            </div>
+            <input class="form-control table-search-input-all" type="text" [formControl]="allBirdsFilter" />
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{languageService.content.NAME_LABEL}}</th>
+                <th scope="col">{{languageService.content.SCIENTIFIC_NAME}}</th>
+                <th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let bird of allFilteredBirds | async; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                    <ngb-highlight [result]="languageService.getInfoByLanguage(bird, 'name')" [term]="allBirdsFilter.value"></ngb-highlight>
+                </td>
+
+                <td>
+                    <ngb-highlight [result]="languageService.getInfoByLanguage(bird, 'scientificName')" [term]="allBirdsFilter.value"></ngb-highlight>
+                </td>
+                <td class="acciones-buttons">
+                    <a routerLink="/birdFamilies/birds/{{familyId}}/edit/{{bird.id}}" title="{{languageService.content.TITLE_IMAGES}}">
+                        <i class="icon ion-md-create"></i>
+                    </a>
+                    <!-- Images -->
+                    <a routerLink="/birdFamilies/birds/{{familyId}}/images/{{bird.id}}" title="{{languageService.content.TITLE_VIDEOS}}">
+                        <i class="icon ion-md-images"></i>
+                    </a>
+                    <!-- Videos -->
+                    <a routerLink="/birdFamilies/birds/{{familyId}}/videos/{{bird.id}}" title="{{languageService.content.TITLE_SOUNDS}}">
+                        <i class="icon ion-md-play-circle"></i>
+                    </a>
+                    <!-- Sonidos -->
+                    <a routerLink="/birdFamilies/birds/{{familyId}}/sounds/{{bird.id}}" title="{{languageService.content.REMOVE}}">
+                        <i class="icon ion-md-volume-high"></i>
+                    </a>
+                    <!-- Delete -->
+                    <a (click)="deleteBird(bird, deleteBirdModal)" title="{{languageService.content.REMOVE}}">
+                        <i class="icon ion-md-trash text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="floating-button" title="{{languageService.content.ADD_LABEL}}" routerLink="/birdFamilies/birds/{{familyId}}/edit/0">
+    <i class="icon ion-md-add"></i>
+</div>
+
+<!-- DELETE -->
+<ng-template #deleteBirdModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{languageService.content.DELETE}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{languageService.content.Q_DELETE_BIRD}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="modal.close('Delete')">{{languageService.content.DELETE}}</button>
+        <button type="button" class="btn btn-dark" (click)="modal.close('Cancel')">{{languageService.content.CANCEL}}</button>
+    </div>
+</ng-template>

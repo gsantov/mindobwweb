@@ -1,0 +1,22 @@
+<div [ng2-loading]="spinnerService.spinner" style="height: 100vh; width:100%; position: absolute;">
+        <!-- {{title}} -->
+</div>
+    <div class="header-container">
+        <app-header></app-header>
+      </div>
+      
+      <div class="wrapper">
+        <div class="sidebar-container">
+          <app-sidebar></app-sidebar>
+        </div>
+        <div class="content-container">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+      
+      <!-- Modals aqui? -->
+      <add-bird-modal></add-bird-modal>
+      <app-add-hotspot></app-add-hotspot>
+      <app-preview-modal></app-preview-modal>
+<!-- </div> -->
+

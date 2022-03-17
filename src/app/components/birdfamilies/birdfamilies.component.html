@@ -1,0 +1,46 @@
+<div class="section-content">
+    <div class="section-title">
+            {{languageService.content.FAMILIAS}}
+    </div>
+    <form>
+        <div class="form-group form-inline">
+            <div class="table-search-label">
+                {{languageService.content.SEARCH}}:
+            </div>
+            <input class="form-control table-search-input-all" type="text" [formControl]="allFamiliesFilter" />
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{languageService.content.NAME_LABEL}}</th>
+                <th scope="col">{{languageService.content.SCIENTIFIC_NAME}}</th>
+                <th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let family of allFilteredFamilies | async; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                    <ngb-highlight [result]="languageService.getInfoByLanguage(family, 'name')" [term]="allFamiliesFilter.value"></ngb-highlight>
+                </td>
+                <td>
+                    <ngb-highlight [result]="family.scientificName" [term]="allFamiliesFilter.value"></ngb-highlight>
+                </td>
+                <td class="acciones-buttons">
+                    <a routerLink="/birdFamilies/edit/{{family.id}}" title="{{languageService.content.EDIT_LABEL}}">
+                        <i class="icon ion-md-create"></i>
+                    </a>
+                    <a routerLink="/birdFamilies/birds/{{family.id}}" title="{{languageService.content.SEE_SPECIES}}">
+                        <i class="icon ion-md-list"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div class="floating-button" title="{{languageService.content.ADD_LABEL}}" routerLink="/birdFamilies/edit/0">
+    <i class="icon ion-md-add"></i>
+</div>

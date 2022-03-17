@@ -1,0 +1,59 @@
+<div class="section-content">
+    <div class="section-title">
+        Rutas
+    </div>
+    <form>
+        <div class="form-group form-inline">
+            <div class="table-search-label">
+                {{languageService.content.SEARCH}}:
+            </div>
+            <input class="form-control table-search-input-all" type="text" [formControl]="allRoutesFilter" />
+        </div>
+    </form>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">{{languageService.content.NAME_LABEL}}</th>
+                <th scope="col" class="acciones-col">{{languageService.content.ACTIONS}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let trail of allFilteredRoutes | async; index as i">
+                <th scope="row">{{ i + 1 }}</th>
+                <td>
+                    <ngb-highlight [result]="languageService.getInfoByLanguage(trail, 'name')" [term]="allRoutesFilter.value"></ngb-highlight>
+                </td>
+                <td class="acciones-buttons">
+                    <a routerLink="/routes/edit/{{trail.id}}">
+                        <i class="icon ion-md-create"></i>
+                    </a>
+                    <a (click)="deleteRoute(trail, deleteTrailModal)" title="{{languageService.content.REMOVE}}">
+                        <i class="icon ion-md-trash text-danger"></i>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="floating-button" title="{{languageService.content.ADD_LABEL}}" routerLink="/routes/edit/0">
+        <i class="icon ion-md-add"></i>
+    </div>
+</div>
+
+<!-- DELETE -->
+<ng-template #deleteTrailModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{languageService.content.DELETE}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        {{languageService.content.Q_DELETE_ROUTE}}
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="modal.close('Delete')">{{languageService.content.DELETE}}</button>
+        <button type="button" class="btn btn-dark" (click)="modal.close('Cancel')">{{languageService.content.CANCEL}}</button>
+    </div>
+</ng-template>

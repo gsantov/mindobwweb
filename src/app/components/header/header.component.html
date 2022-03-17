@@ -1,0 +1,18 @@
+<div id="content" class="header" *ngIf="isLogged">
+    <!-- <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <i class="fas fa-align-left"></i>
+        <span>Toggle Sidebar</span>
+    </button> -->
+
+    <div class="toggler-btn" (click)="toggleSidebar()" title="{{languageService.content.SHOW_HIDE_MENU}}">
+        <i class="icon ion-md-menu"></i>
+    </div>
+
+    <div class="title-container">
+        Mindo birdwatching
+    </div>
+    
+    <div class="logout-btn" (click)="logout()" title="{{languageService.content.LOGOUT}}">
+        <i class="icon ion-md-exit"></i>
+    </div>
+</div>

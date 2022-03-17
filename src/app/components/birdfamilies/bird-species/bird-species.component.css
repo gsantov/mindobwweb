@@ -1,0 +1,8 @@
+.table-search-input-all {
+    width: calc(100% - 61px);
+    margin-top: 15px;
+}
+
+.table-search-label {
+    width: 60px;
+}

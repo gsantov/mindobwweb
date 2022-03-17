@@ -1,0 +1,7 @@
+.table-search-input {
+    width: calc(100% - 61px);
+}
+
+.table-search-label {
+    width: 60px;
+}

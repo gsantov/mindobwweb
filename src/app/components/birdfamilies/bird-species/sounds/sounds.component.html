@@ -1,0 +1,77 @@
+<div class="section-content">
+    <div class="section-title-container">
+        <div class="section-title">
+                {{languageService.content.SOUNDS_OF}}: {{languageService.getInfoByLanguage(familiesService.currentBird, "name")}}
+        </div>
+        <!-- ATRAS -->
+        <button class="btn btn-sm btn-danger header-button" (click)="goBack()">
+                {{languageService.content.BACK}}
+        </button>
+    </div>
+    <div id="gallery-container" class="gallery-container">
+        <div *ngFor="let sound of soundCol; index as i" class="audio-container">
+            <audio controls class="">
+                <source src="{{sound.url}}" type="audio/ogg"> Your browser does not support the audio element.
+            </audio>
+            <div class="delete-multimedia bg-danger delete-sound" (click)="deleteSound(sound, i)">
+                <i class="icon ion-md-trash text-danger"></i> {{languageService.content.DELETE}}
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="floating-button" title="{{languageService.content.ADD_LABEL}}" (click)="addNewSound(uploadSoundModal)">
+    <i class="icon ion-md-add"></i>
+</div>
+
+<div class="uploading-progress-container " id="uploading-vid-progress">
+    <div class="uploading-header col-lg-6 col-md-6" (click)="cerrarProgress();">
+            {{languageService.content.CLOSE}}
+    </div>
+    <div class="uploading-progress col-lg-6 col-md-6" style="display: inline-block;">
+        <div class="label-container" *ngFor="let percent of uploadPercent; index as i">
+            <div class="uploading-progress-value">
+                <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" [attr.aria-valuenow]="progress" aria-valuemin="0"
+                    aria-valuemax="100" style="min-width: 2em;" [style.width]="(percent.uploadPercent | async)+ '%'">
+                    {{percent.fileName}} - {{percent.uploadPercent | async | number : '1.0-0'}}%
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- UPLOAD SOnido -->
+<ng-template #uploadSoundModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{languageService.content.UPLOAD_SOUND}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form #galleryLoadSoundForm="ngForm">
+        <div class="modal-body">
+            <div class="form-group">
+                <label for="sonido" class="col-form-label" id="inputGroupFileAddon01">{{languageService.content.SOUND_CLIP}}: *</label>
+                <div class="custom-file">
+                    <input type="file" class="custom-file-input" id="inputGroupFile01" accept=".mp3" aria-describedby="inputGroupFileAddon01"
+                        (change)="onUpload($event)">
+                    <label class="custom-file-label wrap-label" for="inputGroupFile01">{{clipName}}</label>
+                </div>
+                <div [hidden]="fileLoaded" class="alert alert-danger">
+                        {{languageService.content.SOUND_CLIP}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bsauthor" class="col-form-label">{{languageService.content.FLIE_CREDITS}}: *</label>
+                <input required #bsauthor="ngModel" type="text" class="form-control" name="bsauthor" [(ngModel)]="authorInfo">
+                <div [hidden]="bsauthor.valid" class="alert alert-danger">
+                        {{languageService.content.FLIE_CREDITS}} {{languageService.content.REQUIRED}}
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" (click)="modal.close('Save')" [disabled]="!galleryLoadSoundForm.form.valid">{{languageService.content.UPLOAD_SOUND}}</button>
+            <button type="button" class="btn btn-dark" (click)="modal.close('Cancel')">{{languageService.content.CANCEL}}</button>
+        </div>
+    </form>
+</ng-template>
